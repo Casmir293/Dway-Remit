@@ -2,7 +2,7 @@
     <div class="flex flex-col space-y-2">
         <label v-if="props.label" :for="props.name" :class="[labelClass, props.labelClass]">
             {{ props.label }}
-            <span v-if="props.required" class="ml-1 text-error">*</span>
+            <span v-if="props.required" class="ml-1 text-red-500">*</span>
         </label>
 
         <input v-bind="$attrs" :type="props.type" :value="props.modelValue" @input="handleInput"
@@ -32,7 +32,7 @@ const props = defineProps({
     },
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     label: {
         type: String,
@@ -97,13 +97,13 @@ const inputClass = computed((): string => {
         output += " border outline-none border-red-500 ";
     }
     if (props.success) {
-        output += " border outline-none border-gray-300 focus:border-primary ";
+        output += " border outline-none border-gray-300 focus:border-green-400 ";
     }
     if (!computedError.value && !props.success) {
-        output += " border outline-none border-gray-300 focus:border-primary ";
+        output += " border outline-none border-gray-300 focus:border-green-400 ";
     }
     output +=
-        " text-sm font-light lg:font-normal placeholder-[#BCBCBF] w-full text-[#333] border  focus:border-primary ";
+        " text-sm font-light lg:font-normal placeholder-[#BCBCBF] w-full text-[#333] border  focus:border-green-400 ";
     return output;
 });
 
