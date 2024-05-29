@@ -1,6 +1,12 @@
 <template>
-    <div>
-        <h2 class="text-xl font-semibold mb-2">{{ title }}</h2>
+    <hr class="my-8">
+    <div v-if="store.teachers.length < 1" class="text-center">
+        <h2 class="text-xl font-semibold mb-2 ">No registered teacher yet</h2>
+        <p>Start by registering a teacher</p>
+    </div>
+
+    <div v-else>
+        <h2 class="text-xl font-semibold text-center mb-6 underline">Registered Teachers</h2>
         <ul>
             <section class="lg:grid-cols-2 gap-3 grid">
                 <li v-for="(person, index) in people" :key="index" class="mb-2">
