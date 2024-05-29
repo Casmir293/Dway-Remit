@@ -1,11 +1,13 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Teacher and Student Management</h1>
-    <TeacherForm />
-    <TeacherList />
-    <hr class="my-8">
-    <StudentForm />
-    <StudentList />
+  <div class="container mx-auto">
+    <h1 class="text-lg font-bold mb-4 text-center bg-green-100 p-4 lg:py-8 lg:text-2xl">📚 My School Portal</h1>
+    <section class="sm:mx-32 lg:mx-80 px-4 shadow-2xl sm:p-6 sm:rounded-lg">
+      <TeacherForm />
+      <TeacherList />
+      <hr class="my-8">
+      <StudentForm />
+      <StudentList />
+    </section>
   </div>
 </template>
 

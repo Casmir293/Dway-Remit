@@ -108,10 +108,10 @@ const typeClasses = computed((): string => {
             break;
         case "grey":
             result =
-                "border border-dimgrey text-header rounded-lg flex justify-center onfocus:border-green-400";
+                "border border-dimgrey text-gray-500 hover:opacity-60 rounded-lg flex justify-center onfocus:border-green-400";
             break;
         case "danger":
-            result = "text-error border border-error rounded-lg flex justify-center hover:opacity-90";
+            result = "text-red-500 border border-red-500 rounded-lg flex justify-center hover:opacity-60";
             break;
         case "current":
             result = "bg-[#02B15614] text-green-400 rounded-lg flex justify-center";

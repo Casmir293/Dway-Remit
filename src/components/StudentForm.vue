@@ -1,6 +1,6 @@
 <template>
     <div class="mb-4">
-        <h2 class="text-xl font-semibold mb-2">Students Portal</h2>
+        <h2 class="text-xl font-semibold mb-2">Students Section</h2>
         <form @submit.prevent="submitForm">
             <div class="grid grid-cols-2 gap-4">
                 <input v-model="student.nationalId" placeholder="National ID" required>
