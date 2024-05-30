@@ -67,7 +67,6 @@ import BasicButton from "./components/BasicButton.vue";
 import EditModal from "./components/StudentModal.vue";
 
 const props = defineProps({
-  title: String,
   isStudent: Boolean,
 });
 
@@ -77,11 +76,21 @@ const people = computed(() =>
   props.isStudent ? store.students : store.students
 );
 
+// Delete Student
 const deletePerson = (index) => {
-  if (props.isStudent) {
-    store.deleteStudent(index);
-  } else {
-    store.deleteStudent(index);
+  try {
+    if (props.isStudent) {
+      store.deleteStudent(index);
+    } else {
+      store.deleteStudent(index);
+    }
+    toast.success("Student deleted successfully", {
+      timeout: 2000,
+    });
+  } catch (error) {
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
   }
 };
 
@@ -101,7 +110,7 @@ const closeEditModal = () => {
   selectedStudent.value = null;
 };
 
-//Submit Edit
+// Submit Edit
 const updateStudent = (updatedStudent) => {
   try {
     const index = store.students.findIndex(

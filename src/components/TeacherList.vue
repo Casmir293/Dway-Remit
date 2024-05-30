@@ -70,7 +70,6 @@ import BasicButton from "./components/BasicButton.vue";
 import EditModal from "./components/TeacherModal.vue";
 
 const props = defineProps({
-  title: String,
   isTeacher: Boolean,
 });
 
@@ -80,11 +79,21 @@ const people = computed(() =>
   !props.isTeacher ? store.teachers : store.students
 );
 
+// Delete Teacher
 const deletePerson = (index) => {
-  if (!props.isTeacher) {
-    store.deleteTeacher(index);
-  } else {
-    store.deleteStudent(index);
+  try {
+    if (!props.isTeacher) {
+      store.deleteTeacher(index);
+    } else {
+      store.deleteStudent(index);
+    }
+    toast.success("Teacher deleted successfully", {
+      timeout: 2000,
+    });
+  } catch (error) {
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
   }
 };
 
