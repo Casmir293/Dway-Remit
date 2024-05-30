@@ -78,7 +78,6 @@
       <div class="flex gap-3 justify-end mt-8">
         <BasicButton
           label="Save Teacher"
-
           type="submit"
           :loading="loading"
           class="w-full lg:w-[50%]"
@@ -102,6 +101,7 @@ const surnameError = ref("");
 const dobError = ref("");
 const teacherNumberError = ref("");
 const store = useMainStore();
+const toast = useToast();
 const teacher = ref({
   nationalId: "",
   title: "",
@@ -111,10 +111,6 @@ const teacher = ref({
   teacherNumber: "",
   salary: "",
 });
-
-// toast
-const toast = useToast();
-
 
 // Form Validation
 const validateForm = () => {
@@ -158,17 +154,7 @@ const submitForm = () => {
   if (!validateForm()) return false;
 
   try {
-    teacher.value = {
-      nationalId: "",
-      title: "",
-      name: "",
-      surname: "",
-      dob: "",
-      teacherNumber: "",
-      salary: "",
-    };
-
-    loading.value = false;
+    loading.value = true;
     store.addTeacher({ ...teacher.value });
     toast.success("Teacher added successfully", {
       timeout: 2000,

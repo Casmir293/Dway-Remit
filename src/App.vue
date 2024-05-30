@@ -32,7 +32,7 @@
     </section>
 
     <section
-      class="sm:mx-32 lg:mx-80 px-4 shadow-2xl pb-5 sm:p-6 sm:rounded-lg"
+      class="mx-2 sm:mx-32 lg:mx-80 mb-8 px-4 shadow-2xl pt-5 pb-5 sm:p-6 rounded-lg"
     >
       <section v-if="portal === 'teacher'">
         <TeacherForm />

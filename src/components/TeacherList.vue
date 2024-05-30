@@ -37,7 +37,7 @@
               <BasicButton
                 kind="grey"
                 label="Edit"
-                @click="editPerson(index)"
+                @click="openEditModal(person)"
               />
               <BasicButton
                 kind="danger"
@@ -50,18 +50,31 @@
       </section>
     </ul>
   </div>
+
+  <EditModal
+    v-if="selectedTeacher"
+    :visible="isEditModalVisible"
+    title="Edit Teacher"
+    body="Update the teacher details below."
+    :teacher="selectedTeacher"
+    @confirm="updateTeacher"
+    @cancel="closeEditModal"
+  />
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useToast } from "vue-toastification";
 import { useMainStore } from "../stores/mainStore";
 import BasicButton from "./components/BasicButton.vue";
+import EditModal from "./components/TeacherModal.vue";
 
 const props = defineProps({
   title: String,
   isTeacher: Boolean,
 });
 
+const toast = useToast();
 const store = useMainStore();
 const people = computed(() =>
   !props.isTeacher ? store.teachers : store.students
@@ -77,8 +90,37 @@ const deletePerson = (index) => {
 
 const emit = defineEmits(["editPerson"]);
 
-const editPerson = (index) => {
-  // Implement edit functionality
-  // This can be handled by emitting an event to the parent component or setting up a dedicated edit mode.
+// Edit Modal
+const isEditModalVisible = ref(false);
+const selectedTeacher = ref(null);
+
+const openEditModal = (teacher) => {
+  selectedTeacher.value = teacher;
+  isEditModalVisible.value = true;
+};
+
+const closeEditModal = () => {
+  isEditModalVisible.value = false;
+  selectedTeacher.value = null;
+};
+
+//Submit Edit
+const updateTeacher = (updatedTeacher) => {
+  try {
+    const index = store.teachers.findIndex(
+      (t) => t.nationalId === updatedTeacher.nationalId
+    );
+    if (index !== -1) {
+      store.teachers[index] = updatedTeacher;
+    }
+    closeEditModal();
+    toast.success("Teacher edited successfully", {
+      timeout: 2000,
+    });
+  } catch (error) {
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
+  }
 };
 </script>
