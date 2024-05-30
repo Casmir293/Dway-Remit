@@ -1,44 +1,132 @@
 <template>
-  <div>
-    <h2 class="text-xl font-semibold mb-2">{{ title }}</h2>
+  <hr class="my-8" />
+  <div v-if="store.students.length < 1" class="text-center">
+    <h2 class="text-xl font-semibold mb-2">No registered student yet</h2>
+    <p>Start by registering a student</p>
+  </div>
+
+  <div v-else>
+    <h2 class="text-xl font-semibold text-center mb-6 underline">
+      Registered Students
+    </h2>
     <ul>
-      <li v-for="(person, index) in people" :key="index" class="mb-2">
-        {{ person.name }} {{ person.surname }} - {{ person.nationalId }}
-        <button @click="editPerson(index)" class="ml-2 text-blue-500">
-          Edit
-        </button>
-        <button @click="deletePerson(index)" class="ml-2 text-red-500">
-          Delete
-        </button>
-      </li>
+      <section class="lg:grid-cols-2 gap-3 grid">
+        <li v-for="(person, index) in people" :key="index" class="mb-2">
+          <div class="border p-4 shadow-lg rounded-lg">
+            <p class="mb-2">
+              <span class="font-medium">Name</span>: {{ person.name }}
+              {{ person.surname }}
+            </p>
+            <p class="mb-2">
+              <span class="font-medium">Contact</span>:
+              {{ person.studentNumber }}
+            </p>
+            <p class="mb-2">
+              <span class="font-medium">National ID</span>
+              {{ person.nationalId }}
+            </p>
+            <p class="mb-2">
+              <span class="font-medium">DOB:</span>
+              {{ person.dob }}
+            </p>
+
+            <div class="flex gap-3 mt-3 justify-end">
+              <BasicButton
+                kind="grey"
+                label="Edit"
+                @click="openEditModal(person)"
+              />
+              <BasicButton
+                kind="danger"
+                label="Delete"
+                @click="deletePerson(index)"
+              />
+            </div>
+          </div>
+        </li>
+      </section>
     </ul>
   </div>
+
+  <EditModal
+    v-if="selectedStudent"
+    :visible="isEditModalVisible"
+    title="Edit Student"
+    body="Update the studet details below."
+    :student="selectedStudent"
+    @confirm="updateStudent"
+    @cancel="closeEditModal"
+  />
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useToast } from "vue-toastification";
 import { useMainStore } from "../stores/mainStore";
+import BasicButton from "./components/BasicButton.vue";
+import EditModal from "./components/StudentModal.vue";
 
 const props = defineProps({
-  title: String,
-  isTeacher: Boolean,
+  isStudent: Boolean,
 });
 
+const toast = useToast();
 const store = useMainStore();
 const people = computed(() =>
-  props.isTeacher ? store.teachers : store.students
+  props.isStudent ? store.students : store.students
 );
 
+// Delete Student
 const deletePerson = (index) => {
-  if (props.isTeacher) {
-    store.deleteTeacher(index);
-  } else {
-    store.deleteStudent(index);
+  try {
+    if (props.isStudent) {
+      store.deleteStudent(index);
+    } else {
+      store.deleteStudent(index);
+    }
+    toast.success("Student deleted successfully", {
+      timeout: 2000,
+    });
+  } catch (error) {
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
   }
 };
 
-const editPerson = (index) => {
-  // Implement edit functionality
-  // This can be handled by emitting an event to the parent component or setting up a dedicated edit mode.
+const emit = defineEmits(["editPerson"]);
+
+// Edit Modal
+const isEditModalVisible = ref(false);
+const selectedStudent = ref(null);
+
+const openEditModal = (student) => {
+  selectedStudent.value = student;
+  isEditModalVisible.value = true;
+};
+
+const closeEditModal = () => {
+  isEditModalVisible.value = false;
+  selectedStudent.value = null;
+};
+
+// Submit Edit
+const updateStudent = (updatedStudent) => {
+  try {
+    const index = store.students.findIndex(
+      (t) => t.nationalId === updatedStudent.nationalId
+    );
+    if (index !== -1) {
+      store.students[index] = updatedStudent;
+    }
+    closeEditModal();
+    toast.success("Student edited successfully", {
+      timeout: 2000,
+    });
+  } catch (error) {
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
+  }
 };
 </script>
