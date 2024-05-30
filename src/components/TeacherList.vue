@@ -113,7 +113,7 @@ const closeEditModal = () => {
   selectedTeacher.value = null;
 };
 
-//Submit Edit
+// Submit Edit
 const updateTeacher = (updatedTeacher) => {
   try {
     const index = store.teachers.findIndex(
