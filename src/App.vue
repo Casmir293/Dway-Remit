@@ -54,7 +54,6 @@ import TeacherList from "./components/TeacherList.vue";
 import StudentForm from "./components/StudentForm.vue";
 import StudentList from "./components/StudentList.vue";
 
-const isTeacher = ref(true);
 const portal = ref("teacher");
 
 const selectSection = (section) => {
