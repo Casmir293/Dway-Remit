@@ -64,6 +64,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { useToast } from "vue-toastification";
 import { useMainStore } from "../stores/mainStore";
 import BasicButton from "./components/BasicButton.vue";
 import EditModal from "./components/TeacherModal.vue";
@@ -73,6 +74,7 @@ const props = defineProps({
   isTeacher: Boolean,
 });
 
+const toast = useToast();
 const store = useMainStore();
 const people = computed(() =>
   !props.isTeacher ? store.teachers : store.students
@@ -102,13 +104,23 @@ const closeEditModal = () => {
   selectedTeacher.value = null;
 };
 
+//Submit Edit
 const updateTeacher = (updatedTeacher) => {
-  const index = store.teachers.findIndex(
-    (t) => t.nationalId === updatedTeacher.nationalId
-  );
-  if (index !== -1) {
-    store.teachers[index] = updatedTeacher;
+  try {
+    const index = store.teachers.findIndex(
+      (t) => t.nationalId === updatedTeacher.nationalId
+    );
+    if (index !== -1) {
+      store.teachers[index] = updatedTeacher;
+    }
+    closeEditModal();
+    toast.success("Teacher edited successfully", {
+      timeout: 2000,
+    });
+  } catch (error) {
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
   }
-  closeEditModal();
 };
 </script>

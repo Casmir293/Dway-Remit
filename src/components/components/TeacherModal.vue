@@ -164,8 +164,51 @@ watch(
   { deep: true }
 );
 
+// Form Validation
+const validateForm = () => {
+  nationalIdError.value = "";
+  nameError.value = "";
+  surnameError.value = "";
+  dobError.value = "";
+  teacherNumberError.value = "";
+
+  let isValid = true;
+
+  if (!teacherCopy.value.nationalId) {
+    nationalIdError.value = "National ID is required";
+    isValid = false;
+  }
+  if (!teacherCopy.value.name) {
+    nameError.value = "First name is required";
+    isValid = false;
+  }
+  if (!teacherCopy.value.surname) {
+    surnameError.value = "Last name is required";
+    isValid = false;
+  }
+  if (!teacherCopy.value.dob) {
+    dobError.value = "Date of birth is required";
+    isValid = false;
+  }
+  if (!teacherCopy.value.teacherNumber) {
+    teacherNumberError.value = "Contact is required";
+    isValid = false;
+  }
+
+  const age =
+    new Date().getFullYear() - new Date(teacherCopy.value.dob).getFullYear();
+  if (age < 21) {
+    dobError.value = "Teacher must be at least 21 years old.";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
 const handleConfirm = () => {
-  emits("confirm", teacherCopy.value);
+  if (validateForm()) {
+    emits("confirm", teacherCopy.value);
+  }
 };
 
 const handleCancel = () => {
