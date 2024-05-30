@@ -16,7 +16,6 @@
 - [State Management](#state-management)
 - [Validation](#validation)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -70,7 +69,7 @@ To get started with the project, follow these steps:
 
 ## Usage
 
-Once the development server is running, you can open the application in your browser at http://localhost:3000. From here, you can start adding, editing, and deleting teachers and students.
+Once the development server is running, you can open the application in your browser localhost. From here, you can start adding, editing, and deleting teachers and students.
 
 ## Components
 
@@ -101,3 +100,7 @@ State management is handled using Pinia. The main store (mainStore.js) contains 
 ## Validation
 
 Form validation is implemented to ensure that all required fields are filled out correctly before a record is added or updated.
+
+## Contributing
+
+Contributions are welcome! If you have any suggestions or improvements, feel free to create a pull request or open an issue.
