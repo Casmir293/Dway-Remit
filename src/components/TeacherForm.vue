@@ -165,6 +165,15 @@ const submitForm = () => {
     });
   } finally {
     loading.value = false;
+    teacher.value = {
+      nationalId: "",
+      title: "",
+      name: "",
+      surname: "",
+      dob: "",
+      teacherNumber: "",
+      salary: "",
+    };
   }
 };
 </script>
