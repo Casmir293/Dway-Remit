@@ -5,6 +5,7 @@
     >
       📚 My School Portal
     </h1>
+
     <section class="flex justify-center gap-5 mb-5 font-medium">
       <div
         @click="selectSection('teacher')"
@@ -60,5 +61,3 @@ const selectSection = (section) => {
   portal.value = section;
 };
 </script>
-
-<style></style>

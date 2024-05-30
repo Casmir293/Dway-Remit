@@ -24,6 +24,7 @@
             class="border h-12 outline-green-400 text-gray-500 px-3 rounded-lg"
           >
             <option disabled value="" class="">--Choose title--</option>
+
             <option>Mr</option>
             <option>Mrs</option>
             <option>Miss</option>
@@ -77,6 +78,7 @@
       <div class="flex gap-3 justify-end mt-8">
         <BasicButton
           label="Save Teacher"
+
           type="submit"
           :loading="loading"
           class="w-full lg:w-[50%]"
@@ -109,8 +111,10 @@ const teacher = ref({
   teacherNumber: "",
   salary: "",
 });
+
 // toast
 const toast = useToast();
+
 
 // Form Validation
 const validateForm = () => {

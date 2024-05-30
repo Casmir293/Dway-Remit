@@ -75,6 +75,8 @@ const deletePerson = (index) => {
   }
 };
 
+const emit = defineEmits(["editPerson"]);
+
 const editPerson = (index) => {
   // Implement edit functionality
   // This can be handled by emitting an event to the parent component or setting up a dedicated edit mode.
