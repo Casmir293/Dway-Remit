@@ -19,7 +19,7 @@
 
 ## Introduction
 
-This project is a simple School Management System built with Vue 3 and Pinia. It allows users to manage teachers and students by providing functionalities to add, edit, and delete records. The application ensures that inputs are validated to maintain data integrity.
+This project is a simple School Management System built with Vue 3 and Pinia. It allows users to manage teachers and students by providing functionalities to add, edit, and delete records. The application ensures that inputs are validated to maintain data integrity. This web application can be accessed at [School Portal](https://dway-remit-nu.vercel.app/).
 
 ## Features
 
