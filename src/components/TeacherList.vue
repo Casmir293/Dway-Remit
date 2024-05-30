@@ -58,6 +58,7 @@ import { useMainStore } from "../stores/mainStore";
 import BasicButton from "./components/BasicButton.vue";
 
 const props = defineProps({
+  title: String,
   isTeacher: Boolean,
 });
 
@@ -77,6 +78,7 @@ const deletePerson = (index) => {
 const emit = defineEmits(["editPerson"]);
 
 const editPerson = (index) => {
-  emit("editPerson", index);
+  // Implement edit functionality
+  // This can be handled by emitting an event to the parent component or setting up a dedicated edit mode.
 };
 </script>

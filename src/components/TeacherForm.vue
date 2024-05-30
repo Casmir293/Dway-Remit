@@ -6,7 +6,7 @@
         <InputField
           label="National ID"
           class=""
-          v-model="formValues.nationalId"
+          v-model="teacher.nationalId"
           placeholder="Enter your National ID"
           type="number"
           maxlength="5"
@@ -19,11 +19,12 @@
             Title <span class="text-red-500">*</span>
           </p>
           <select
-            v-model="formValues.title"
+            v-model="teacher.title"
             required
             class="border h-12 outline-green-400 text-gray-500 px-3 rounded-lg"
           >
-            <option disabled value="">--Choose title--</option>
+            <option disabled value="" class="">--Choose title--</option>
+
             <option>Mr</option>
             <option>Mrs</option>
             <option>Miss</option>
@@ -34,7 +35,7 @@
 
         <InputField
           label="First Name"
-          v-model="formValues.name"
+          v-model="teacher.name"
           placeholder="Enter your firstname"
           :error="nameError"
           required
@@ -42,7 +43,7 @@
 
         <InputField
           label="Last Name"
-          v-model="formValues.surname"
+          v-model="teacher.surname"
           placeholder="Enter your lastname"
           :error="surnameError"
           required
@@ -50,7 +51,7 @@
 
         <InputField
           label="DOB"
-          v-model="formValues.dob"
+          v-model="teacher.dob"
           placeholder="Enter your Date of Birth"
           type="date"
           :error="dobError"
@@ -59,7 +60,7 @@
 
         <InputField
           label="Contact"
-          v-model="formValues.teacherNumber"
+          v-model="teacher.teacherNumber"
           placeholder="Enter your Phone Number"
           type="number"
           :error="teacherNumberError"
@@ -69,14 +70,15 @@
 
       <InputField
         label="Salary (optional)"
-        v-model="formValues.salary"
+        v-model="teacher.salary"
         placeholder="Enter your Salary"
         type="number"
       />
 
       <div class="flex gap-3 justify-end mt-8">
         <BasicButton
-          :label="isEditing ? 'Update Teacher' : 'Save Teacher'"
+          label="Save Teacher"
+
           type="submit"
           :loading="loading"
           class="w-full lg:w-[50%]"
@@ -87,11 +89,11 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useMainStore } from "../stores/mainStore";
 import InputField from "./components/InputField.vue";
 import BasicButton from "./components/BasicButton.vue";
-//import { useToast } from 'vue-toastification'; //NB install later for toast notifications
+import { useToast } from "vue-toastification";
 
 const loading = ref(false);
 const nationalIdError = ref("");
@@ -110,22 +112,9 @@ const teacher = ref({
   salary: "",
 });
 
-//Editing logic
-const props = defineProps({
-  isTeacher: Boolean,
-  initialValues: Object,
-  isEditing: Boolean,
-  index: Number,
-});
-const emit = defineEmits(["formSubmitted"]);
-const formValues = ref({ ...props.initialValues });
+// toast
+const toast = useToast();
 
-watch(
-  () => props.initialValues,
-  (newValues) => {
-    formValues.value = { ...newValues };
-  }
-);
 
 // Form Validation
 const validateForm = () => {
@@ -137,19 +126,19 @@ const validateForm = () => {
 
   let isValid = true;
 
-  if (!formValues.value.nationalId) {
+  if (!teacher.value.nationalId) {
     nationalIdError.value = "National ID is required";
     isValid = false;
-  } else if (!formValues.value.name) {
+  } else if (!teacher.value.name) {
     nameError.value = "First name is required";
     isValid = false;
-  } else if (!formValues.value.surname) {
+  } else if (!teacher.value.surname) {
     surnameError.value = "Last name is required";
     isValid = false;
-  } else if (!formValues.value.dob) {
+  } else if (!teacher.value.dob) {
     dobError.value = "Date of birth is required";
     isValid = false;
-  } else if (!formValues.value.teacherNumber) {
+  } else if (!teacher.value.teacherNumber) {
     teacherNumberError.value = "Contact is required";
     isValid = false;
   }
@@ -169,15 +158,7 @@ const submitForm = () => {
   if (!validateForm()) return false;
 
   try {
-    loading.value = false;
-
-    if (props.isEditing) {
-      store.editTeacher(props.index, { ...formValues.value });
-    } else {
-      store.addTeacher({ ...formValues.value });
-    }
-    // store.addTeacher({ ...teacher.value });
-    formValues.value = {
+    teacher.value = {
       nationalId: "",
       title: "",
       name: "",
@@ -186,9 +167,16 @@ const submitForm = () => {
       teacherNumber: "",
       salary: "",
     };
-    emit("formSubmitted");
+
+    loading.value = false;
+    store.addTeacher({ ...teacher.value });
+    toast.success("Teacher added successfully", {
+      timeout: 2000,
+    });
   } catch (error) {
-    console.error("Error adding teacher:", error);
+    toast.error("Error:", error, {
+      timeout: 4000,
+    });
   } finally {
     loading.value = false;
   }
